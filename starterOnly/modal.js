@@ -1,25 +1,28 @@
 // Burger menu
 function editNav() {
-  var x = document.getElementById("myTopnav");
+  var x = document.getElementById("myTopnav")
   if (x.className === "topnav") {
-    x.className += " responsive";
+    x.className += " responsive"
   } else {
-    x.className = "topnav";
+    x.className = "topnav"
   }
 }
 
 // DOM Elements
-const modalbg = document.querySelector(".bground");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const modalBtnClose = document.querySelector(".bground .close");
+const modalBody = document.querySelector('.modal-body')
+const modalbg = document.querySelector(".bground")
+const modalBtn = document.querySelectorAll(".modal-btn")
+const modalBtnClose = document.querySelector(".bground .close")
 const signupForm = document.getElementById('signupForm')
 
 // launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal))
 
 // launch modal form
 function launchModal() {
-  modalbg.style.display = "block";
+  modalbg.style.display = "flex"
+  modalbg.style.alignItems = "center"
+  modalbg.style.justifyContent = "center"
 }
 
 // close modal event
@@ -27,7 +30,122 @@ modalBtnClose.addEventListener('click', closeModal)
 
 // close modal form
 function closeModal() {
-  modalbg.style.display = "none";
+  modalbg.style.display = "none"
+  modalbg.style.alignItems = null
+  modalbg.style.justifyContent = null
+}
+
+// display or hide error message
+function handleErrorMessage(label, message, statement) {
+  const nameNode = document.getElementById(`${label}`)
+  const nameNodeParent = nameNode.parentNode
+
+  if(statement === "error") {
+    nameNodeParent.dataset.error = message
+    nameNodeParent.dataset.errorVisible="true"
+  }else{
+    nameNodeParent.removeAttribute('data-error')
+    nameNodeParent.removeAttribute('data-error-visible')
+  }
+}
+
+// check firstname and lastname value
+function checkFormName(label, value) {
+  if (value.trim().length >= 2) {
+    handleErrorMessage(label)
+    return true
+  }
+
+  const message = "Veuillez entrer 2 caractères ou plus."
+  handleErrorMessage(label, message, "error")
+  return false
+}
+
+// check email value
+function checkFormEmail(email) {
+  const pattern = /^[\w._-]+@[\w._-]+\.[\w._-]+/
+  const regex = new RegExp(pattern)
+  const testEmail = regex.test(email)
+  if(testEmail) {
+    handleErrorMessage('email')
+    return true
+  }
+
+  const message = 'L\'adresse email doit être valide.'
+  handleErrorMessage('email', message, "error")
+  return false
+}
+
+// check birthdate value
+function checkFormBirthdate(birthdate) {
+  const pattern = /\d{2,4}\-\d{1,2}\-\d{1,2}/
+  const regex = new RegExp(pattern)
+  const testBirthdate = regex.test(birthdate)
+  if (testBirthdate) {
+    handleErrorMessage('birthdate')
+    return true
+  }
+
+  const message = 'Indiquez votre date de naissance.'
+  handleErrorMessage('birthdate', message, "error")
+  return false
+}
+
+// check quantity value
+function checkFormQuantity(quantity) {
+  const pattern = /\d{1,2}/
+  const regex = new RegExp(pattern)
+  const testQuantity = regex.test(quantity)
+  if (testQuantity && (quantity >= 0 && quantity <= 99)) {
+    handleErrorMessage('quantity')
+    return true
+  }
+
+  const message = 'Veuillez entrer un nombre entre 0 et 99.'
+  handleErrorMessage('quantity', message, "error")
+  return false
+}
+
+// check location value
+function checkFormLocation(location) {
+  if (location !== null) {
+    handleErrorMessage('location1')
+    return true
+  }
+
+  const message = 'Veuillez sélectionner un tournoi svp.'
+  handleErrorMessage("location1", message, "error")
+  return false
+}
+
+// check term conditions value
+function checkFormCondition(condition) {
+  if (condition === 'on') {
+    handleErrorMessage("checkbox1")
+    return true
+  }
+
+  const message = 'Veuillez accepter les termes et conditions svp.'
+  handleErrorMessage("checkbox1", message, "error")
+  return false
+}
+
+function registeredMessage() {
+  signupForm.style.display = "none"
+  modalBody.insertAdjacentHTML("beforeend", `
+    <div class="form-confirmation">
+      <p class="msg-confirmation">Merci pour<br> votre inscription</p>
+      <button class="btn-submit button btn-close-form">Fermer</button>
+    </div>
+  `)
+}
+
+function endingForm() {
+  closeModal()
+  const modalConfirmation = document.querySelector('.form-confirmation')
+  modalConfirmation.remove()
+  signupForm.reset()
+  signupForm.removeAttribute('style')
 }
 
 // signup form checking data
@@ -35,7 +153,7 @@ signupForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
   const formData = new FormData(signupForm)
-  // const values = [...formData.entries()];
+  // const values = [...formData.entries()]
   // console.log('values: ', values)
 
   const firstname = checkFormName("first", formData.get("first"))
@@ -45,76 +163,14 @@ signupForm.addEventListener('submit', (e) => {
   const quantity = checkFormQuantity(formData.get("quantity"))
   const location = checkFormLocation(formData.get("location"))
   const checkbox1 = checkFormCondition(formData.get("checkbox1"))
-  // const checkbox2 = checkFormCondition(formData.get("checkbox2"))
 
   const valideForm = firstname && lastname && email && birthdate && quantity && location && checkbox1
   if (valideForm) {
-    console.log('Merci de votre participation!')
-    signupForm.reset()
+    console.log('Merci pour votre inscription!')
+    registeredMessage()
+    const modalConfirmationBtnClose = document.querySelector('.btn-close-form')
+    modalConfirmationBtnClose.addEventListener('click', endingForm)
   } else {
     console.log("Le formulaire contient des erreurs!")
   }
 })
-
-function handleErrorMessage(label, message) {
-  console.log('label: ', label)
-  console.log('message d\'erreur: ', message)
-  console.log('----------------------------------')
-}
-
-function checkFormName(label, value) {
-  if (value.trim().length >= 2) return true
-
-  const message = "Veuillez entrer 2 caractères ou plus."
-  handleErrorMessage(label, message)
-  return false
-}
-
-function checkFormEmail(email) {
-  const pattern = /^[\w._-]+@[\w._-]+\.[\w._-]+/
-  const regex = new RegExp(pattern)
-  const testEmail = regex.test(email)
-  if(testEmail) return true
-
-  const message = 'L\'adresse email doit être valide.'
-  handleErrorMessage('email', message)
-  return false
-}
-
-function checkFormBirthdate(birthdate) {
-  const pattern = /\d{2,4}\-\d{1,2}\-\d{1,2}/
-  const regex = new RegExp(pattern)
-  const testBirthdate = regex.test(birthdate)
-  if (testBirthdate) return true
-
-  const message = 'Indiquez votre date de naissance.'
-  handleErrorMessage('birthdate', message)
-  return false
-}
-
-function checkFormQuantity(quantity) {
-  const pattern = /\d{1,2}/
-  const regex = new RegExp(pattern)
-  const testQuantity = regex.test(quantity)
-  if (testQuantity && (quantity >= 0 && quantity <= 99)) return true
-
-  const message = 'Veuillez entrer un nombre entre 0 et 99.'
-  handleErrorMessage('quantity', message)
-  return false
-}
-
-function checkFormLocation(location) {
-  if (location !== null) return true
-
-  const message = 'Veuillez sélectionner un tournoi svp.'
-  handleErrorMessage("location", message)
-  return false
-}
-
-function checkFormCondition(condition) {
-  if (condition === 'on') return true
-
-  const message = 'Veuillez accepter les termes et conditions svp.'
-  handleErrorMessage("checkbox1", message)
-  return false
-}
