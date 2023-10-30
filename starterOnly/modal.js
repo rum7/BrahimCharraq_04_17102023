@@ -1,8 +1,15 @@
+// DOM Elements
+const myBody = document.body
+const myTopnav = document.getElementById("myTopnav")
+const myBurgerIcon = document.querySelector(".myBurgerIcon")
+const modalBody = document.querySelector('.modal-body')
+const modalbg = document.querySelector(".bground")
+const modalBtn = document.querySelectorAll(".modal-btn")
+const modalBtnClose = document.querySelector(".bground .close")
+const signupForm = document.getElementById('signupForm')
+
 // Burger menu
-function editNav() {
-  const myTopnav = document.getElementById("myTopnav")
-  const myBurgerIcon = document.querySelector(".myBurgerIcon")
-  const myBody = document.body
+function editNav() { 
   if (myTopnav.className === "topnav") {
     myTopnav.classList.add("responsive")
     myBurgerIcon.classList.add("active")
@@ -14,19 +21,14 @@ function editNav() {
   }
 }
 
-// DOM Elements
-const modalBody = document.querySelector('.modal-body')
-const modalbg = document.querySelector(".bground")
-const modalBtn = document.querySelectorAll(".modal-btn")
-const modalBtnClose = document.querySelector(".bground .close")
-const signupForm = document.getElementById('signupForm')
-
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal))
 
 // launch modal form
 function launchModal() {
   modalbg.style.display = "flex"
+  myBody.classList.add("noScroll")
+
 }
 
 // close modal event
@@ -35,14 +37,16 @@ modalBtnClose.addEventListener('click', closeModal)
 // close modal form
 function closeModal() {
   modalbg.style.display = "none"
+  myBody.classList.remove("noScroll")
+
 }
 
 // display or hide error message
-function handleErrorMessage(label, message, statement) {
+function handleErrorMessage(label, message) {
   const nameNode = document.getElementById(`${label}`)
   const nameNodeParent = nameNode.parentNode
 
-  if(statement === "error") {
+  if(message !== undefined) {
     nameNodeParent.dataset.error = message
     nameNodeParent.dataset.errorVisible="true"
   }else{
@@ -59,7 +63,7 @@ function checkFormName(label, value) {
   }
 
   const message = "Veuillez entrer 2 caractères ou plus."
-  handleErrorMessage(label, message, "error")
+  handleErrorMessage(label, message)
   return false
 }
 
@@ -74,7 +78,7 @@ function checkFormEmail(email) {
   }
 
   const message = 'L\'adresse email doit être valide.'
-  handleErrorMessage('email', message, "error")
+  handleErrorMessage('email', message)
   return false
 }
 
@@ -89,7 +93,7 @@ function checkFormBirthdate(birthdate) {
   }
 
   const message = 'Indiquez votre date de naissance.'
-  handleErrorMessage('birthdate', message, "error")
+  handleErrorMessage('birthdate', message)
   return false
 }
 
@@ -104,7 +108,7 @@ function checkFormQuantity(quantity) {
   }
 
   const message = 'Veuillez entrer un nombre entre 0 et 99.'
-  handleErrorMessage('quantity', message, "error")
+  handleErrorMessage('quantity', message)
   return false
 }
 
@@ -116,7 +120,7 @@ function checkFormLocation(location) {
   }
 
   const message = 'Veuillez sélectionner un tournoi svp.'
-  handleErrorMessage("location1", message, "error")
+  handleErrorMessage("location1", message)
   return false
 }
 
@@ -128,7 +132,7 @@ function checkFormCondition(condition) {
   }
 
   const message = 'Veuillez accepter les termes et conditions svp.'
-  handleErrorMessage("checkbox1", message, "error")
+  handleErrorMessage("checkbox1", message)
   return false
 }
 
@@ -155,8 +159,6 @@ signupForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
   const formData = new FormData(signupForm)
-  // const values = [...formData.entries()]
-  // console.log('values: ', values)
 
   const firstname = checkFormName("first", formData.get("first"))
   const lastname = checkFormName("last", formData.get("last"))
