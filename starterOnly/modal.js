@@ -1,10 +1,16 @@
 // Burger menu
 function editNav() {
-  var x = document.getElementById("myTopnav")
-  if (x.className === "topnav") {
-    x.className += " responsive"
+  const myTopnav = document.getElementById("myTopnav")
+  const myBurgerIcon = document.querySelector(".myBurgerIcon")
+  const myBody = document.body
+  if (myTopnav.className === "topnav") {
+    myTopnav.classList.add("responsive")
+    myBurgerIcon.classList.add("active")
+    myBody.classList.add("noScroll")
   } else {
-    x.className = "topnav"
+    myTopnav.classList.remove("responsive")
+    myBurgerIcon.classList.remove("active")
+    myBody.classList.remove("noScroll")
   }
 }
 
@@ -21,8 +27,6 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal))
 // launch modal form
 function launchModal() {
   modalbg.style.display = "flex"
-  modalbg.style.alignItems = "center"
-  modalbg.style.justifyContent = "center"
 }
 
 // close modal event
@@ -31,8 +35,6 @@ modalBtnClose.addEventListener('click', closeModal)
 // close modal form
 function closeModal() {
   modalbg.style.display = "none"
-  modalbg.style.alignItems = null
-  modalbg.style.justifyContent = null
 }
 
 // display or hide error message
