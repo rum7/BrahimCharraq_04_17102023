@@ -28,7 +28,6 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal))
 function launchModal() {
   modalbg.style.display = "flex"
   myBody.classList.add("noScroll")
-
 }
 
 // close modal event
@@ -38,7 +37,6 @@ modalBtnClose.addEventListener('click', closeModal)
 function closeModal() {
   modalbg.style.display = "none"
   myBody.classList.remove("noScroll")
-
 }
 
 // display or hide error message
@@ -174,6 +172,7 @@ signupForm.addEventListener('submit', (e) => {
     registeredMessage()
     const modalConfirmationBtnClose = document.querySelector('.btn-close-form')
     modalConfirmationBtnClose.addEventListener('click', endingForm)
+    modalBtnClose.addEventListener('click', endingForm)
   } else {
     console.log("Le formulaire contient des erreurs!")
   }

@@ -1,8 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Roboto:wght@400;500&display=swap');
-/* 
-font-family: 'DM Sans', sans-serif;
-font-family: 'Roboto', sans-serif; 
-*/
 
 :root {
   --font-default: "DM Sans", sans-serif;
@@ -648,10 +644,6 @@ input {
   transform: translateY(-13px) rotate(45deg)
 }
 
-
-@media screen and (max-width: 1010px) {
-
-} 
 @media screen and (width < 480px) {
   .responsive .main-navbar {
     margin-top: 60px;
